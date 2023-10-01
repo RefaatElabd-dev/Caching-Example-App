@@ -1,0 +1,49 @@
+﻿@page "/fetchdata"
+
+<PageTitle>Employee Directory</PageTitle>
+
+@inject SampleDataAccess data
+
+<h1>Employee Directory</h1>
+
+<p>This component demonstrates fetching data from a service.</p>
+
+@if (employeeModels == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>First Name</th>
+                <th>Last Name</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var employee in employeeModels)
+            {
+                <tr>
+                    <td>@employee.FirstName</td>
+                    <td>@employee.LastName</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    private List<EmployeeModel>? employeeModels;
+
+    // protected override void OnInitialized()
+    // {
+    //     employeeModels = data.GetEmployees();
+    // }
+
+    protected override async Task OnInitializedAsync()
+    {
+        //employeeModels = await data.GetEmployeesAsync();
+        employeeModels = await data.GetEmployeesCache();
+    }
+}
